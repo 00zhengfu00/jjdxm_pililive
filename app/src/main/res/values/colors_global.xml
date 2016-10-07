@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--字体颜色-->
+    <color name="global_text_color_01">#FF000000</color>
+    <color name="global_text_color_02">#FFFFFFFF</color>
+    <color name="global_text_color_03">#FF00FF00</color>
+    <color name="global_text_color_04">#FFFF0000</color>
+    <color name="global_text_color_05">#FF10A0F6</color>
+    <color name="global_text_color_06">#88454545</color>
+    <color name="global_text_color_07">#55454545</color>
+    <!--背景颜色-->
+    <color name="global_bg_color_01">#FF000000</color>
+    <color name="global_bg_color_02">#FFFFFFFF</color>
+    <color name="global_bg_color_03">#FF00FF00</color>
+    <color name="global_bg_color_04">#FFFF0000</color>
+    <color name="global_bg_color_05">#FF10A0F6</color>
+    <color name="global_bg_color_06">#88454545</color>
+    <color name="global_bg_color_07">#55454545</color>
+    <color name="global_bg_color_08">#3EB2FB</color>
+    <color name="global_bg_color_09">#0F88EB</color>
+
+    
+</resources>

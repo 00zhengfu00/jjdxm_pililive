@@ -1,0 +1,112 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              tools:context="com.hfg.live.ui.activity.LoginActivity">
+
+    <include layout="@layout/title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/global_margin_big"
+                android:layout_marginRight="@dimen/global_margin_big"
+                android:orientation="vertical">
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@drawable/shape_et_bg"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/global_height_mid"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:digits="0123456789"
+                            android:gravity="center_vertical"
+                            android:hint="请填写手机号码"
+                            android:inputType="phone"
+                            android:maxLength="11"
+                            android:paddingLeft="@dimen/global_margin_mid"
+                            android:paddingRight="@dimen/global_margin_mid"
+                            android:singleLine="true"
+                            android:textCursorDrawable="@drawable/color_cursor"
+                            android:textSize="@dimen/global_text_size_mid"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#44000000"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/global_height_mid"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/et_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:digits="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+                            android:gravity="center_vertical"
+                            android:hint="请填写密码"
+                            android:inputType="textPassword"
+                            android:maxLength="16"
+                            android:paddingLeft="@dimen/global_margin_mid"
+                            android:paddingRight="@dimen/global_margin_mid"
+                            android:singleLine="true"
+                            android:textCursorDrawable="@drawable/color_cursor"
+                            android:textSize="@dimen/global_text_size_mid"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@drawable/btn_login"
+                    android:text="注册"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/global_text_size_big"/>
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@android:color/transparent"
+                    android:text="登录"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/global_text_size_big"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

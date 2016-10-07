@@ -1,0 +1,37 @@
+<resources>
+
+
+    <!-- global -->
+    <!-- 标题栏 -->
+    <dimen name="global_title_bar_height_top">48dp</dimen>
+    <dimen name="global_title_bar_height_center">48dp</dimen>
+    <dimen name="global_title_bar_height_bottom">48dp</dimen>
+    <!-- 功能框高度 -->
+    <dimen name="global_height_large">100dp</dimen>
+    <dimen name="global_height_big">64dp</dimen>
+    <dimen name="global_height_mid">48dp</dimen>
+    <dimen name="global_height_small">36dp</dimen>
+    <!-- 按钮高度 -->
+    <dimen name="global_btn_height_big">30dp</dimen>
+    <dimen name="global_btn_height_mid">56dp</dimen>
+    <dimen name="global_btn_height_small">56dp</dimen>
+    <!-- 外边距 -->
+    <dimen name="global_margin_large">24dp</dimen>
+    <dimen name="global_margin_big">16dp</dimen>
+    <dimen name="global_margin_xmid">10dp</dimen>
+    <dimen name="global_margin_mid">8dp</dimen>
+    <dimen name="global_margin_smid">6dp</dimen>
+    <dimen name="global_margin_small">4dp</dimen>
+    <!-- 内边距 -->
+    <dimen name="global_padding_large">16dp</dimen>
+    <dimen name="global_padding_big">12dp</dimen>
+    <dimen name="global_padding_mid">8dp</dimen>
+    <dimen name="global_padding_small">4dp</dimen>
+    <!-- 文本字体大小 -->
+    <dimen name="global_text_size_xlarge">24dp</dimen>
+    <dimen name="global_text_size_large">20dp</dimen>
+    <dimen name="global_text_size_big">16dp</dimen>
+    <dimen name="global_text_size_mid">14dp</dimen>
+    <dimen name="global_text_size_small">12dp</dimen>
+
+</resources>

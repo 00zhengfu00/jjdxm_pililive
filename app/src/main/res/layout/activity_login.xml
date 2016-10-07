@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              tools:context="com.hfg.live.ui.activity.LoginActivity">
+
+    <include layout="@layout/title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/global_margin_big"
+                android:layout_marginRight="@dimen/global_margin_big"
+                android:orientation="vertical">
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:background="@drawable/shape_et_bg"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:digits="0123456789"
+                        android:paddingLeft="@dimen/global_margin_mid"
+                        android:paddingRight="@dimen/global_margin_mid"
+                        android:gravity="center_vertical"
+                        android:background="@android:color/transparent"
+                        android:hint="请输入手机号码"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="@dimen/global_text_size_mid"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@drawable/shape_et_bg"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:digits="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+                        android:gravity="center_vertical"
+                        android:hint="请输入密码"
+                        android:paddingLeft="@dimen/global_margin_mid"
+                        android:paddingRight="@dimen/global_margin_mid"
+                        android:inputType="textPassword"
+                        android:maxLength="16"
+                        android:background="@android:color/transparent"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="@dimen/global_text_size_mid"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@drawable/btn_login"
+                    android:text="登录"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/global_text_size_big"/>
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/global_height_mid"
+                    android:layout_marginTop="@dimen/global_margin_big"
+                    android:background="@android:color/transparent"
+                    android:text="注册"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/global_text_size_big"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

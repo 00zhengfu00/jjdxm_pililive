@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <!-- 数据库名称 -->
+    <dbname value="live.db" >
+    </dbname>
+
+    <!-- 数据库名称版本号，表结构升级只需要升级版本号即可 -->
+    <version value="1" >
+    </version>
+
+    <!-- 创建表，只需要创建相对应的bean对象根据LitePal的数据类型支持，可以进行对象关系映射的数据类型一共有8种，int、short、long、float、double、boolean、String和Date。 -->
+    <!-- 只有声明成private修饰符的字段才会被映射到数据库表中，如果你有某一个字段不想映射的话，只需要将它改成public、protected或default修饰符就可以了 -->
+    <!-- 需要继承DataSupport对象才拥有curd功能 -->
+    <list>
+        <mapping class="com.dou361.live.bean.UserBean" ></mapping>
+    </list>
+
+</litepal>
