@@ -1,31 +1,35 @@
 package com.dou361.live.ui.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.opengl.GLSurfaceView;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
+import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.dou361.baseutils.utils.StringUtils;
+import com.bumptech.glide.Glide;
 import com.dou361.baseutils.utils.UIUtils;
-import com.dou361.customui.ui.LoadingTieDialog;
+import com.dou361.customui.ui.AlertView;
 import com.dou361.live.R;
-import com.dou361.live.bean.LiveId;
 import com.dou361.live.bean.LiveRoom;
-import com.dou361.live.module.ApiServiceUtils;
-import com.dou361.live.module.Callback;
-import com.dou361.live.utils.UserManager;
-import com.dou361.live.utils.Utils;
+import com.dou361.live.module.TestRoomLiveRepository;
+import com.dou361.live.ui.adapter.RoomPanlAdapter;
+import com.dou361.live.ui.config.StatusConfig;
+import com.dou361.live.ui.fragment.RoomPanlFragment;
+import com.dou361.live.ui.fragment.TransparentFragment;
+import com.dou361.live.ui.listener.OnLiveListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.pili.pldroid.streaming.CameraStreamingManager;
 import com.pili.pldroid.streaming.CameraStreamingSetting;
 import com.pili.pldroid.streaming.StreamingProfile;
@@ -34,34 +38,71 @@ import com.pili.pldroid.streaming.widget.AspectFrameLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
+import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
-public class StartLiveActivity extends BaseLiveActivity implements CameraStreamingManager.StreamingStateListener {
+/**
+ * ========================================
+ * <p>
+ * 版 权：dou361.com 版权所有 （C） 2015
+ * <p>
+ * 作 者：陈冠明
+ * <p>
+ * 个人网站：http://www.dou361.com
+ * <p>
+ * 版 本：1.0
+ * <p>
+ * 创建日期：2016/10/4 14:17
+ * <p>
+ * 描 述：开始直播
+ * <p>
+ * <p>
+ * 修订历史：
+ * <p>
+ * ========================================
+ */
+public class StartLiveActivity extends BaseActivity implements CameraStreamingManager.StreamingStateListener {
 
-    private static final String TAG = StartLiveActivity.class.getSimpleName();
-    @Bind(R.id.start_container)
-    RelativeLayout startContainer;
-    @Bind(R.id.ll_back)
-    LinearLayout llBack;
-    @Bind(R.id.ll_sw)
-    LinearLayout llSw;
-    @Bind(R.id.et_title)
-    EditText titleEdit;
-    @Bind(R.id.countdown_txtv)
-    TextView countdownView;
-    @Bind(R.id.cameraPreview_afl)
+    @BindView(R.id.cameraPreview_afl)
     AspectFrameLayout afl;
-    @Bind(R.id.cameraPreview_surfaceView)
+    @BindView(R.id.cameraPreview_surfaceView)
     GLSurfaceView cameraPreviewFrameView;
+    @BindView(R.id.start_container)
+    RelativeLayout startContainer;
+    @BindView(R.id.countdown_txtv)
+    TextView countdownView;
+    @BindView(R.id.tv_stop_username)
+    TextView tv_stop_username;
+    @BindView(R.id.eiv_stop_avatar)
+    EaseImageView eiv_stop_avatar;
+    @BindView(R.id.finish_frame)
+    View liveEndLayout;
+    @BindView(R.id.cover_image)
+    ImageView coverImage;
+    @BindView(R.id.vp_panl)
+    ViewPager vp_panl;
 
     public static final int MSG_UPDATE_COUNTDOWN = 1;
+
     public static final int COUNTDOWN_DELAY = 1000;
+
     public static final int COUNTDOWN_START_INDEX = 3;
     public static final int COUNTDOWN_END_INDEX = 1;
     protected boolean isShutDownCountdown = false;
+
+    boolean isStarted;
+    RoomPanlFragment fragment;
+
+    private String liveId;
+    private String roomId;
+    private String anchorId;
+    private StreamingProfile mProfile;
+    private CameraStreamingManager mCameraStreamingManager;
+    private JSONObject mJSONObject;
+    private CameraStreamingSetting setting;
+
 
     private Handler handler = new Handler() {
         @Override
@@ -73,19 +114,69 @@ public class StartLiveActivity extends BaseLiveActivity implements CameraStreami
             }
         }
     };
-    private CameraStreamingManager mCameraStreamingManager;
-    private JSONObject mJSONObject;
-    private StreamingProfile mProfile;
-    private LiveRoom mLiveRoom;
-    private CameraStreamingSetting setting;
+
+    @Override
+    public boolean openSliding() {
+        return false;
+    }
 
     @Override
     protected void initView() {
         setContentView(R.layout.activity_start_live);
-        mLiveRoom = new LiveRoom();
-        mLiveRoom.setNickname(UserManager.getInstance().getUserBean().getNickname());
-        mLiveRoom.setUsername(UserManager.getInstance().getUserBean().getUsername());
-        llSw.setVisibility(View.VISIBLE);
+
+        RoomPanlAdapter adapter = new RoomPanlAdapter(getSupportFragmentManager());
+        adapter.addFragment(new TransparentFragment());
+        fragment = new RoomPanlFragment();
+        Bundle mBundle = new Bundle();
+        LiveRoom liveRoom = new LiveRoom();
+        liveId = TestRoomLiveRepository.getLiveRoomId(EMClient.getInstance().getCurrentUser());
+        roomId = TestRoomLiveRepository.getChatRoomId(EMClient.getInstance().getCurrentUser());
+        anchorId = EMClient.getInstance().getCurrentUser();
+        liveRoom.setId(liveId);
+        liveRoom.setChatroomId(roomId);
+        liveRoom.setAnchorId(anchorId);
+        liveRoom.setAvatar(R.mipmap.live_avatar_girl09);
+        mBundle.putSerializable(StatusConfig.LiveRoom, liveRoom);
+        mBundle.putInt(StatusConfig.ROOM_STYLE, StatusConfig.ROOM_STYLE_LIVE);
+        fragment.setArguments(mBundle);
+        adapter.addFragment(fragment);
+        vp_panl.setAdapter(adapter);
+        vp_panl.setCurrentItem(adapter.getCount() - 1);
+        fragment.setOnLiveListener(new OnLiveListener() {
+            @Override
+            public void onCamreClick(View view) {
+                /**
+                 * 切换摄像头
+                 */
+                mCameraStreamingManager.switchCamera();
+            }
+
+            @Override
+            public void onLightClick(View view) {
+                /**
+                 * 打开或关闭闪关灯
+                 */
+                boolean succeed = mCameraStreamingManager.turnLightOff();
+                if (succeed) {
+                    view.setSelected(!view.isSelected());
+                }
+            }
+
+            @Override
+            public void onVoiceClick(View view) {
+                /**
+                 * 打开或关闭声音
+                 */
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                if (audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(false);
+                    view.setSelected(false);
+                } else {
+                    audioManager.setMicrophoneMute(true);
+                    view.setSelected(true);
+                }
+            }
+        });
         initEnv();
     }
 
@@ -111,159 +202,10 @@ public class StartLiveActivity extends BaseLiveActivity implements CameraStreami
                 .setCameraPrvSizeLevel(CameraStreamingSetting.PREVIEW_SIZE_LEVEL.MEDIUM)
                 .setCameraPrvSizeRatio(CameraStreamingSetting.PREVIEW_SIZE_RATIO.RATIO_16_9);
         afl.setShowMode(AspectFrameLayout.SHOW_MODE.FULL);
-        mCameraStreamingManager = new CameraStreamingManager(StartLiveActivity.this, afl, cameraPreviewFrameView, CameraStreamingManager.EncodingType.SW_VIDEO_WITH_SW_AUDIO_CODEC);  // soft codec
+        mCameraStreamingManager = new CameraStreamingManager(mContext, afl, cameraPreviewFrameView, CameraStreamingManager.EncodingType.SW_VIDEO_WITH_SW_AUDIO_CODEC);  // soft codec
         mCameraStreamingManager.prepare(setting, mProfile);
-        mCameraStreamingManager.setStreamingStateListener(StartLiveActivity.this);
+        mCameraStreamingManager.setStreamingStateListener(this);
     }
-
-    @OnClick({R.id.ll_sw, R.id.btn_start})
-    public void onClisck(View v) {
-        switch (v.getId()) {
-            case R.id.ll_sw:
-                /**切换摄像头*/
-                if (mCameraStreamingManager != null) {
-                    mCameraStreamingManager.switchCamera();
-                }
-                break;
-            case R.id.btn_start:
-                /**开始直播*/
-                if (TextUtils.isEmpty(titleEdit.getText())) {
-                    Toast.makeText(this, "直播标题不能为空", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Utils.hideKeyboard(titleEdit);
-                startLive();
-                break;
-        }
-    }
-
-    private void startLive() {
-        ApiServiceUtils.startLive(titleEdit.getText().toString(), new Callback() {
-            @Override
-            public void onSuccuss(String data) {
-                LiveId mLiveId = JSON.parseObject(data, LiveId.class);
-                if (mLiveId != null && mLiveId.getId() != null) {
-                    String[] arr = mLiveId.getId().split("_");
-                    if (arr != null && arr.length == 2) {
-                        try {
-                            int id = Integer.valueOf(arr[1]);
-                            roomId = "hgf_" + id;
-                            mLiveRoom.setDirid(id);
-                            mLiveRoom.setHlsip(data);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                if (mLiveRoom == null || mLiveRoom.getHlsip() == null) {
-                    UIUtils.showToastLong("创建直播失败！");
-                } else {
-                    isPlay = true;
-                    liveId = mLiveRoom.getDirid();
-                    startContainer.setVisibility(View.INVISIBLE);
-                    Utils.hideKeyboard(titleEdit);
-                    new Thread() {
-                        public void run() {
-                            int i = COUNTDOWN_START_INDEX;
-                            do {
-                                Message msg = Message.obtain();
-                                msg.what = MSG_UPDATE_COUNTDOWN;
-                                msg.arg1 = i;
-                                handler.sendMessage(msg);
-                                i--;
-                                try {
-                                    Thread.sleep(COUNTDOWN_DELAY);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            } while (i >= COUNTDOWN_END_INDEX);
-                        }
-                    }.start();
-                }
-            }
-
-            @Override
-            public void onLogicError(int code, String message) {
-                UIUtils.showToastLong(StringUtils.getString(message));
-            }
-
-            @Override
-            public void onComplete() {
-                LoadingTieDialog.dismssTie((Activity) mContext);
-            }
-        });
-    }
-
-    public void handleUpdateCountdown(final int count) {
-        if (countdownView != null) {
-            countdownView.setVisibility(View.VISIBLE);
-            countdownView.setText(String.format("%d", count));
-            ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 0f, 1.0f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-            scaleAnimation.setDuration(COUNTDOWN_DELAY);
-            scaleAnimation.setFillAfter(false);
-            scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    countdownView.setVisibility(View.GONE);
-                    if (count == COUNTDOWN_END_INDEX && mCameraStreamingManager != null && !isShutDownCountdown) {
-                        try {
-                            showToast("直播开始！");
-                            mJSONObject = new JSONObject(mLiveRoom.getHlsip());
-                            StreamingProfile.Stream stream = new StreamingProfile.Stream(mJSONObject);
-                            mProfile.setStream(stream);  // You can invoke this before startStreaming, but not in initialization phase.
-                            mCameraStreamingManager.setStreamingProfile(mProfile);
-                            mCameraStreamingManager.startStreaming();
-                            isPull = true;
-                            onMessageListInit();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            showToast("推流地址解析失败！");
-                        }
-                    }
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            if (!isShutDownCountdown) {
-                countdownView.startAnimation(scaleAnimation);
-            } else {
-                countdownView.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mCameraStreamingManager != null) {
-            mCameraStreamingManager.pause();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mCameraStreamingManager != null) {
-            mCameraStreamingManager.resume();
-        }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mCameraStreamingManager != null) {
-            mCameraStreamingManager.destroy();
-        }
-    }
-
 
     @Override
     public void onStateChanged(int state, Object info) {
@@ -281,6 +223,9 @@ public class StartLiveActivity extends BaseLiveActivity implements CameraStreami
                         }
                     }
                 }).start();
+                if (fragment != null) {
+                    fragment.addPeriscope();
+                }
                 break;
             case CameraStreamingManager.STATE.CONNECTING:
                 break;
@@ -312,5 +257,186 @@ public class StartLiveActivity extends BaseLiveActivity implements CameraStreami
     @Override
     public boolean onStateHandled(int i, Object o) {
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mCameraStreamingManager != null) {
+            mCameraStreamingManager.stopStreaming();
+        }
+        super.onBackPressed();
+    }
+
+    /**
+     * 弹出提示框
+     */
+    private void showAlertDialog() {
+        new AlertView("是否关闭直播间？", null, null, null, new String[]{"是", "否"}, mContext, AlertView.Style.Alert, new AlertView.OnItemClickListener() {
+            @Override
+            public void onItemClick(Object o, int position) {
+                if (position == 0) {
+                    /**
+                     * 关闭直播显示直播成果
+                     */
+                    if (mCameraStreamingManager != null) {
+                        mCameraStreamingManager.stopStreaming();
+                    }
+                    if (!isStarted) {
+                        onBackPressed();
+                        return;
+                    }
+                    showConfirmCloseLayout();
+                }
+            }
+        }).setCancelable(true)
+                .show();
+    }
+
+    @OnClick({R.id.live_close_confirm, R.id.btn_start, R.id.btn_close})
+    public void onLiveClick(View v) {
+        switch (v.getId()) {
+            case R.id.live_close_confirm:
+                onBackPressed();
+                break;
+            case R.id.btn_start:
+                /**
+                 * 开始直播
+                 */
+                if (liveId == null) {
+                    new EaseAlertDialog(this, "只有存在的liveId才能开启直播").show();
+                    return;
+                }
+                startContainer.setVisibility(View.INVISIBLE);
+                //Utils.hideKeyboard(titleEdit);
+                new Thread() {
+                    public void run() {
+                        int i = COUNTDOWN_START_INDEX;
+                        do {
+                            Message msg = Message.obtain();
+                            msg.what = MSG_UPDATE_COUNTDOWN;
+                            msg.arg1 = i;
+                            handler.sendMessage(msg);
+                            i--;
+                            try {
+                                Thread.sleep(COUNTDOWN_DELAY);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } while (i >= COUNTDOWN_END_INDEX);
+                    }
+                }.start();
+                break;
+            case R.id.btn_close:
+                showAlertDialog();
+                break;
+        }
+    }
+
+    private void showConfirmCloseLayout() {
+        //显示封面
+        coverImage.setVisibility(View.VISIBLE);
+        liveEndLayout.setVisibility(View.VISIBLE);
+        List<LiveRoom> liveRoomList = TestRoomLiveRepository.getLiveRoomList();
+        for (LiveRoom liveRoom : liveRoomList) {
+            if (liveRoom.getId().equals(liveId)) {
+                coverImage.setImageResource(liveRoom.getCover());
+                Glide.with(mContext)
+                        .load(liveRoom.getCover())
+                        .placeholder(R.color.placeholder)
+                        .into(eiv_stop_avatar);
+            }
+        }
+        tv_stop_username.setText(EMClient.getInstance().getCurrentUser());
+    }
+
+    public void handleUpdateCountdown(final int count) {
+        if (countdownView != null) {
+            countdownView.setVisibility(View.VISIBLE);
+            countdownView.setText(String.format("%d", count));
+            ScaleAnimation scaleAnimation =
+                    new ScaleAnimation(1.0f, 0f, 1.0f, 0f, Animation.RELATIVE_TO_SELF, 0.5f,
+                            Animation.RELATIVE_TO_SELF, 0.5f);
+            scaleAnimation.setDuration(COUNTDOWN_DELAY);
+            scaleAnimation.setFillAfter(false);
+            scaleAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    countdownView.setVisibility(View.GONE);
+                    fragment.joinChatRoom();
+                    if (count == COUNTDOWN_END_INDEX && mCameraStreamingManager != null && !isShutDownCountdown) {
+                        try {
+                            UIUtils.showToastCenterShort("直播开始！");
+                            mJSONObject = new JSONObject(liveId);
+                            StreamingProfile.Stream stream = new StreamingProfile.Stream(mJSONObject);
+                            mProfile.setStream(stream);  // You can invoke this before startStreaming, but not in initialization phase.
+                            mCameraStreamingManager.setStreamingProfile(mProfile);
+                            //这里没有打开只是简单测试功能没有去推流的
+                            mCameraStreamingManager.startStreaming();
+                            isStarted = true;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            UIUtils.showToastCenterShort("推流地址解析失败！");
+                        }
+                    }
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            if (!isShutDownCountdown) {
+                countdownView.startAnimation(scaleAnimation);
+            } else {
+                countdownView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCameraStreamingManager != null) {
+            mCameraStreamingManager.pause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mCameraStreamingManager != null) {
+            mCameraStreamingManager.resume();
+        }
+        if (fragment != null) {
+            fragment.onResume();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (fragment != null) {
+            fragment.onStop();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (fragment != null) {
+            fragment.destroy();
+        }
+        super.onDestroy();
+        if (mCameraStreamingManager != null) {
+            mCameraStreamingManager.destroy();
+        }
     }
 }

@@ -1,1 +1,1 @@
-include ':app', ':jjdxm-pililive'
+include ':app', ':jjdxm-pililive', ':easeui'

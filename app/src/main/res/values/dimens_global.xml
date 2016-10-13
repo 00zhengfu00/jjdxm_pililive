@@ -34,4 +34,42 @@
     <dimen name="global_text_size_mid">14dp</dimen>
     <dimen name="global_text_size_small">12dp</dimen>
 
+    <dimen name="text_size1">10dp</dimen>
+    <dimen name="text_size2">14dp</dimen>
+    <dimen name="text_size3">12dp</dimen>
+    <dimen name="text_size4">16dp</dimen>
+    <dimen name="text_size5">18dp</dimen>
+    <dimen name="text_size6">24dp</dimen>
+    <dimen name="text_size7">28dp</dimen>
+
+
+    <dimen name="text_display4">112sp</dimen>
+    <dimen name="text_display3">56sp</dimen>
+    <dimen name="text_display2">45sp</dimen>
+    <dimen name="text_display1">34sp</dimen>
+    <dimen name="text_headline">24sp</dimen>
+    <dimen name="text_title_b">21sp</dimen>
+    <dimen name="text_subhead">17sp</dimen>
+    <dimen name="text_body2_b">15sp</dimen>
+    <dimen name="text_body1">15sp</dimen>
+    <dimen name="text_caption">13sp</dimen>
+    <dimen name="text_button_b">15sp</dimen>
+
+    <!--style="@style/TextAppearance.AppCompat.Display4"
+    style="@style/TextAppearance.AppCompat.Display3"
+    style="@style/TextAppearance.AppCompat.Display2"
+    style="@style/TextAppearance.AppCompat.Display1"
+    style="@style/TextAppearance.AppCompat.Headline"
+    style="@style/TextAppearance.AppCompat.Title"
+    style="@style/TextAppearance.AppCompat.Subhead"
+    style="@style/TextAppearance.AppCompat.Body2"
+    style="@style/TextAppearance.AppCompat.Body1"
+    style="@style/TextAppearance.AppCompat.Caption"
+    style="@style/TextAppearance.AppCompat.Button"
+
+    style="@style/Widget.AppCompat.Button"
+    style="@style/Widget.AppCompat.Button.Borderless"
+    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    style="@style/Widget.AppCompat.Button.Small"-->
+
 </resources>

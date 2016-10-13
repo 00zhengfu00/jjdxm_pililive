@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.dou361.live.R;
 import com.github.florent37.viewanimator.AnimationListener;
 import com.github.florent37.viewanimator.ViewAnimator;
-import com.dou361.live.R;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
  * <p/>
  * 创建日期：2016/7/31 10:14
  * <p/>
- * 描 述：礼物布局
+ * 描 述：总的礼物布局
  * <p/>
  * <p/>
  * 修订历史：
@@ -40,9 +40,9 @@ import butterknife.ButterKnife;
  */
 public class GiftLayout extends LinearLayout {
 
-    @Bind(R.id.left_gift_view1)
+    @BindView(R.id.left_gift_view1)
     LiveLeftGiftView leftGiftView;
-    @Bind(R.id.left_gift_view2)
+    @BindView(R.id.left_gift_view2)
     LiveLeftGiftView leftGiftView2;
 
     /**
@@ -67,7 +67,7 @@ public class GiftLayout extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_gift_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_gift_layout, this);
         ButterKnife.bind(this);
 
     }

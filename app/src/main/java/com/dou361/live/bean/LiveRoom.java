@@ -1,5 +1,7 @@
 package com.dou361.live.bean;
 
+import java.io.Serializable;
+
 /**
  * ========================================
  * <p>
@@ -11,81 +13,60 @@ package com.dou361.live.bean;
  * <p>
  * 版 本：1.0
  * <p>
- * 创建日期：2016/8/8 22:18
+ * 创建日期：2016/10/4 11:32
  * <p>
- * 描 述：直播间对象
+ * 描 述：直播间
  * <p>
  * <p>
  * 修订历史：
  * <p>
  * ========================================
  */
-public class LiveRoom {
+public class LiveRoom implements Serializable {
 
-    int id;
-    int dirid;//直播id
-    String username;//主播手机号
-    String headportrait;//主播头像地址url
-    String nickname;//主播昵称
-    String picture;//直播封面地址url
-    String hlsip;//推流地址url
-    String playurl;//播放地址url
-    int audienceNum;//观看人数
+    /**
+     * 直播id
+     */
+    private String id;
+    /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 观看人数
+     */
+    private int audienceNum;
+    /**
+     * 头像
+     */
+    private int avatar;
+    /**
+     * 封面
+     */
+    private int cover;
+    /**
+     * 聊天室id
+     */
+    private String chatroomId;
+    /**
+     * 主播id
+     */
+    private String anchorId;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getDirid() {
-        return dirid;
+    public String getName() {
+        return name;
     }
 
-    public void setDirid(int dirid) {
-        this.dirid = dirid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getHeadportrait() {
-        return headportrait;
-    }
-
-    public void setHeadportrait(String headportrait) {
-        this.headportrait = headportrait;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getHlsip() {
-        return hlsip;
-    }
-
-    public void setHlsip(String hlsip) {
-        this.hlsip = hlsip;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAudienceNum() {
@@ -96,11 +77,35 @@ public class LiveRoom {
         this.audienceNum = audienceNum;
     }
 
-    public String getPlayurl() {
-        return playurl;
+    public int getCover() {
+        return cover;
     }
 
-    public void setPlayurl(String playurl) {
-        this.playurl = playurl;
+    public void setCover(int cover) {
+        this.cover = cover;
+    }
+
+    public String getChatroomId() {
+        return chatroomId;
+    }
+
+    public void setChatroomId(String chatroomId) {
+        this.chatroomId = chatroomId;
+    }
+
+    public String getAnchorId() {
+        return anchorId;
+    }
+
+    public void setAnchorId(String anchorId) {
+        this.anchorId = anchorId;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
     }
 }

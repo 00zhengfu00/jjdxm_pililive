@@ -1,18 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.dou361.live"
-        minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
-//        ndk {
-//            abiFilter 'armeabi-v7a'
-//        }
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        ndk {
+            abiFilter 'armeabi'
+        }
     }
     buildTypes {
         release {
@@ -25,25 +26,19 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.qiniu:happy-dns:0.2.7'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:design:23.3.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'io.reactivex:rxjava:1.1.1'
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
-    compile 'com.squareup.retrofit2:converter-scalars:2.0.0'
-    compile 'com.squareup.okhttp3:okhttp:3.0.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
-    compile 'com.alibaba:fastjson:1.2.14'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.dou361.customui:jjdxm-customui:1.0.2'
-    compile 'com.dou361.litepal:jjdxm-litepal:1.0.0'
-    compile 'com.dou361.baseutils:jjdxm-baseutils:1.0.2'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.jakewharton:butterknife:8.0.1'
+    compile rootProject.ext.jjdxm_v7
+    compile rootProject.ext.jjdxm_design
     compile 'com.github.florent37:viewanimator:1.0.4'
-    compile('com.jaeger.statusbaruitl:library:1.2.0') {
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-    }
+    //自定义view类库
+    compile 'com.dou361.customui:jjdxm-customui:1.0.2'
+    //工具类类库
+    compile 'com.dou361.baseutils:jjdxm-baseutils:1.0.4'
+    //沉浸式一体化
+    compile 'com.dou361.statusbar:jjdxm-statusbar:1.0.0'
+    //环信im
+    compile project(':easeui')
+    //pililive直播
     compile project(':jjdxm-pililive')
 }

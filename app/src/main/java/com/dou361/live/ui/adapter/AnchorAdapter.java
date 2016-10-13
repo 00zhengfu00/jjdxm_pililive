@@ -1,43 +1,46 @@
 package com.dou361.live.ui.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
-import com.dou361.customui.adapter.BaseNoMoreAdapter;
-import com.dou361.customui.holder.BaseHolder;
-import com.dou361.live.bean.LiveRoom;
+import com.dou361.live.R;
+import com.dou361.live.bean.AnchorBean;
 import com.dou361.live.ui.holder.AnchorItemHolder;
+import com.dou361.live.ui.holder.BaseViewHolder;
+import com.dou361.live.ui.listener.OnItemClickRecyclerListener;
 
 import java.util.List;
 
-public class AnchorAdapter extends BaseNoMoreAdapter<LiveRoom> {
+/**
+ * ========================================
+ * <p/>
+ * 版 权：dou361.com 版权所有 （C） 2015
+ * <p/>
+ * 作 者：陈冠明
+ * <p/>
+ * 个人网站：http://www.dou361.com
+ * <p/>
+ * 版 本：1.0
+ * <p/>
+ * 创建日期：2016/10/5
+ * <p/>
+ * 描 述：房间成员适配器
+ * <p/>
+ * <p/>
+ * 修订历史：
+ * <p/>
+ * ========================================
+ */
+public class AnchorAdapter extends BaseRecyclerViewAdapter<AnchorBean> {
 
-
-    private List<LiveRoom> mDatas;
-
-    public AnchorAdapter(Context mContext, List<LiveRoom> list) {
-        super(mContext, list);
-        this.mDatas = list;
-    }
-
-    public int getSize() {
-        return mDatas == null ? 0 : mDatas.size();
+    public AnchorAdapter(Context mContext, List<AnchorBean> mDatas) {
+        super(mContext, mDatas);
     }
 
     @Override
-    public BaseHolder getItemHolder(Context context, int i) {
-        return new AnchorItemHolder(context, i);
-    }
-
-    public void setData(List<LiveRoom> datas) {
-        mDatas.clear();
-        if (datas != null && datas.size() > 0) {
-            mDatas.addAll(datas);
-        }
-    }
-
-    public void addDatas(List<LiveRoom> datas) {
-        if (datas != null && datas.size() > 0) {
-            mDatas.addAll(datas);
-        }
+    public BaseViewHolder getItemHolder(Context mContext, OnItemClickRecyclerListener listener, ViewGroup parent) {
+        return new AnchorItemHolder(mContext, listener, LayoutInflater.from(mContext).
+                inflate(R.layout.holder_item_anchor, parent, false));
     }
 }

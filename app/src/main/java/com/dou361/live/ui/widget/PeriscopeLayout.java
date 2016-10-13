@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2015, 程序亦非猿
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.dou361.live.ui.widget;
 
 import android.animation.Animator;
@@ -40,7 +24,26 @@ import com.dou361.live.R;
 
 import java.util.Random;
 
-
+/**
+ * ========================================
+ * <p>
+ * 版 权：dou361.com 版权所有 （C） 2015
+ * <p>
+ * 作 者：陈冠明
+ * <p>
+ * 个人网站：http://www.dou361.com
+ * <p>
+ * 版 本：1.0
+ * <p>
+ * 创建日期：2016/10/5 20:03
+ * <p>
+ * 描 述：视频点赞动画布局
+ * <p>
+ * <p>
+ * 修订历史：
+ * <p>
+ * ========================================
+ */
 public class PeriscopeLayout extends RelativeLayout {
 
     private Interpolator line = new LinearInterpolator();//线性
@@ -83,9 +86,9 @@ public class PeriscopeLayout extends RelativeLayout {
 
         //初始化显示的图片
         drawables = new Drawable[3];
-        Drawable red = getResources().getDrawable(R.drawable.pl_red);
-        Drawable yellow = getResources().getDrawable(R.drawable.pl_yellow);
-        Drawable blue = getResources().getDrawable(R.drawable.pl_blue);
+        Drawable red = getResources().getDrawable(R.mipmap.live_pl_red);
+        Drawable yellow = getResources().getDrawable(R.mipmap.live_pl_yellow);
+        Drawable blue = getResources().getDrawable(R.mipmap.live_pl_blue);
 
         drawables[0] = red;
         drawables[1] = yellow;
@@ -180,13 +183,9 @@ public class PeriscopeLayout extends RelativeLayout {
     private PointF getPointF(int scale) {
 
         PointF pointF = new PointF();
-        try {
-            pointF.x = random.nextInt((mWidth - 100));//减去100 是为了控制 x轴活动范围,看效果 随意~~
-            //再Y轴上 为了确保第二个点 在第一个点之上,我把Y分成了上下两半 这样动画效果好一些  也可以用其他方法
-            pointF.y = random.nextInt((mHeight - 100)) / scale;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        pointF.x = random.nextInt((mWidth - 100));//减去100 是为了控制 x轴活动范围,看效果 随意~~
+        //再Y轴上 为了确保第二个点 在第一个点之上,我把Y分成了上下两半 这样动画效果好一些  也可以用其他方法
+        pointF.y = random.nextInt((mHeight - 100)) / scale;
         return pointF;
     }
 

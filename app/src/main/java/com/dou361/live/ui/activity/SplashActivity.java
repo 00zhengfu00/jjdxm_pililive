@@ -1,11 +1,9 @@
 package com.dou361.live.ui.activity;
 
-import com.dou361.baseutils.utils.SPUtils;
 import com.dou361.baseutils.utils.SystemUtils;
 import com.dou361.baseutils.utils.UIUtils;
 import com.dou361.live.R;
-import com.dou361.live.utils.StatusConfig;
-import com.dou361.live.utils.UserManager;
+import com.dou361.live.ui.config.SettingConfig;
 
 
 /**
@@ -34,13 +32,11 @@ public class SplashActivity extends BaseActivity {
     protected void initView() {
         setContentView(R.layout.activity_splash);
         /** 应用上一次启动的版本号 */
-        String preVersion = (String) SPUtils.getData(mContext,
-                StatusConfig.PREVERSION, "");
-        if (!preVersion.equals(SystemUtils.getVersionName())) {
+        int preVersion = SettingConfig.getVersionCode();
+        if (preVersion < SystemUtils.getVersionCode()) {
             /** 如果应用更新版本了，则重新调用向导页面 */
-            SPUtils.putData(mContext, StatusConfig.PREVERSION,
-                    SystemUtils.getVersionName());
-            SPUtils.remove(mContext, StatusConfig.ISFIRST);
+            SettingConfig.putVersionCode(SystemUtils.getVersionCode());
+            SettingConfig.putNotFirstBoot(false);
         }
         UIUtils.postDelayed(new Runnable() {
             @Override
@@ -51,15 +47,26 @@ public class SplashActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean openStatus() {
+        return false;
+    }
+
+    @Override
+    public boolean openSliding() {
+        return false;
+    }
+
     /**
      * 发一个延迟消息进行页面跳转
      */
     private void goToActivity() {
-        if (UserManager.getInstance().isLogin()) {
-            startActivity(MainActivity.class);
+        if (SettingConfig.isNotFirstBoot()) {
+            startActivity(LoginActivity.class);
             onBackPressed();
         } else {
             startActivity(GuideActivity.class);
+            SettingConfig.putNotFirstBoot(true);
             onBackPressed();
         }
     }

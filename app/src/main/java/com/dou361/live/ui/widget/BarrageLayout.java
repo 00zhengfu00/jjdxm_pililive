@@ -12,38 +12,38 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dou361.live.R;
 import com.github.florent37.viewanimator.AnimationBuilder;
 import com.github.florent37.viewanimator.AnimationListener;
 import com.github.florent37.viewanimator.ViewAnimator;
-import com.dou361.live.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * ========================================
- * <p/>
+ * <p>
  * 版 权：dou361.com 版权所有 （C） 2015
- * <p/>
+ * <p>
  * 作 者：陈冠明
- * <p/>
+ * <p>
  * 个人网站：http://www.dou361.com
- * <p/>
+ * <p>
  * 版 本：1.0
- * <p/>
- * 创建日期：2016/7/31 10:18
- * <p/>
+ * <p>
+ * 创建日期：2016/10/5 19:56
+ * <p>
  * 描 述：弹幕布局
- * <p/>
- * <p/>
+ * <p>
+ * <p>
  * 修订历史：
- * <p/>
+ * <p>
  * ========================================
  */
 public class BarrageLayout extends LinearLayout {
-    @Bind(R.id.container1)
+    @BindView(R.id.container1)
     RelativeLayout container1;
-    @Bind(R.id.container2)
+    @BindView(R.id.container2)
     RelativeLayout container2;
 
     int count = 0;
@@ -69,7 +69,6 @@ public class BarrageLayout extends LinearLayout {
         public void handleMessage(Message msg) {
             int what = msg.what;
             final View barrageView = (View) msg.obj;
-            System.out.println("what = " + what);
             if (what == 0) {
                 container2.addView(barrageView);
             } else {
@@ -89,7 +88,7 @@ public class BarrageLayout extends LinearLayout {
     };
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_barrage_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_barrage_layout, this);
         ButterKnife.bind(this);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         screenWidth = wm.getDefaultDisplay().getWidth();
@@ -106,7 +105,7 @@ public class BarrageLayout extends LinearLayout {
     }
 
     private View newBarrageView(String msgContent, String username) {
-        View barrageView = LayoutInflater.from(getContext()).inflate(R.layout.layout_barrage_show, null);
+        View barrageView = LayoutInflater.from(getContext()).inflate(R.layout.live_widget_right_barrage, null);
         TextView nameView = (TextView) barrageView.findViewById(R.id.name);
         TextView contentView = (TextView) barrageView.findViewById(R.id.content);
         nameView.setText(username);

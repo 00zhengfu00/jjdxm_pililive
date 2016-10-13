@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/root_layout"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black_dark"
-                tools:context="com.dou361.live.ui.activity.StartLiveActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
-    <!--推流界面-->
+
+    <!--推流布局-->
     <com.pili.pldroid.streaming.widget.AspectFrameLayout
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
@@ -22,17 +21,49 @@
             android:layout_gravity="center"/>
 
     </com.pili.pldroid.streaming.widget.AspectFrameLayout>
-    <!--房间标题栏-->
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/room_title_bar"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/global_title_bar_height_top"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right|center_vertical">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/ic_arrow_close"/>
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_panl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <!--开始界面倒计时-->
+    <TextView
+        android:id="@+id/countdown_txtv"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="3"
+        android:textColor="@android:color/white"
+        android:textSize="136.0sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
 
     <!--创建直播界面-->
     <RelativeLayout
         android:id="@+id/start_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
+        android:paddingTop="@dimen/global_title_bar_height_top">
 
         <LinearLayout
             android:id="@+id/edit_container"
@@ -43,7 +74,7 @@
             <ImageView
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:src="@drawable/live_avatar"/>
+                android:src="@drawable/ease_default_avatar"/>
 
             <EditText
                 android:id="@+id/et_title"
@@ -70,63 +101,36 @@
 
     </RelativeLayout>
 
-    <!--开始界倒计时-->
-    <TextView
-        android:id="@+id/countdown_txtv"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="3"
-        android:textColor="@android:color/white"
-        android:textSize="136.0sp"
-        android:textStyle="bold"
+    <!--封面-->
+    <ImageView
+        android:id="@+id/cover_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:visibility="invisible"
+        />
+
+    <!--结束推流面板-->
+    <include
+        android:id="@+id/finish_frame"
+        layout="@layout/layout_live_finish"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <!--聊天面板-->
-    <com.dou361.live.ui.widget.RoomMessagesView
-        android:id="@+id/message_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="174dp"
-        android:layout_alignParentBottom="true"
-        android:paddingLeft="8dp"
-        android:visibility="invisible"
-        />
-
-    <!--弹幕布局-->
-    <com.dou361.live.ui.widget.BarrageLayout
-        android:id="@+id/barrage_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/message_view"
-        android:layout_marginBottom="10dp"
-        />
-
-    <!--视频点赞-->
-    <com.dou361.live.ui.widget.PeriscopeLayout
-        android:id="@+id/periscope_layout"
-        android:layout_width="150dp"
-        android:layout_height="190dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="@dimen/global_title_bar_height_top"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="42dp"/>
+        android:layout_alignParentTop="true"
+        android:gravity="right|center_vertical">
 
-    <!--礼物布局-->
-    <com.dou361.live.ui.widget.GiftLayout
-        android:id="@+id/gift_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="5dp"
-        />
-
-    <!--底部操作面板-->
-    <include
-        android:id="@+id/bottom_bar"
-        layout="@layout/layout_live_bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        />
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/ic_arrow_close_transparent"/>
+    </LinearLayout>
 </RelativeLayout>
