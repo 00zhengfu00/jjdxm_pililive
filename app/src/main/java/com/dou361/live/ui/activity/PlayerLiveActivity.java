@@ -191,7 +191,23 @@ public class PlayerLiveActivity extends BaseActivity implements PLMediaPlayer.On
     }
 
     @Override
-    public boolean onInfo(PLMediaPlayer plMediaPlayer, int i, int i1) {
+    public boolean onInfo(PLMediaPlayer mp, int what, int extra) {
+        switch (what) {
+            case PLMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                /**开始缓冲*/
+                break;
+            case PLMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                /**停止缓冲*/
+                break;
+            case PLMediaPlayer.MEDIA_INFO_AUDIO_RENDERING_START:
+                /**第一帧音频已成功播放*/
+                break;
+            case PLMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START:
+                /**第一帧视频已成功渲染*/
+                fragment.joinChatRoom();
+                fragment.addPeriscope();
+                break;
+        }
         return false;
     }
 
