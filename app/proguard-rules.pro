@@ -16,3 +16,6 @@
 #   public *;
 #}
 -keep class com.pili.pldroid.streaming.** { *; }
+
+-keep class com.dou361.** { *; }
+-keep class tv.danmaku.ijk.** { *; }

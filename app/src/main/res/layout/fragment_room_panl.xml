@@ -55,15 +55,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:visibility="invisible"/>
+
+        <!--私聊面板-->
+        <RelativeLayout
+            android:id="@+id/message_container"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
-
-    <!--私聊面板-->
-    <RelativeLayout
-        android:id="@+id/message_container"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true"/>
 
 </LinearLayout>
 
